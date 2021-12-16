@@ -7,10 +7,10 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^2.7.2"
+    "vite": "^2.7.2",
+    "sass": "^1.45.0"
   },
   "dependencies": {
-    "cropperjs": "^1.5.12",
-    "sass": "^1.45.0"
+    "cropperjs": "^1.5.12"
   }
 }
