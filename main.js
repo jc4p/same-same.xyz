@@ -42,8 +42,10 @@ const onImageReady = (canvas) => {
     const formData = new FormData();
     formData.append('image', canvasBlob);
     // #TODO: Send the image to the API, wait for the result, show it!
-    // and then...
-    container.classList.remove('processing');
+    // and then remove .processing, but for now..
+    setTimeout(() => {
+      container.classList.remove('processing');
+    }, 5000);
   });
 };
 
