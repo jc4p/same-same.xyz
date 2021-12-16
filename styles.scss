@@ -1,0 +1,156 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background-color: #f7cfe1;
+  font-family: 'Ideal Sans A', 'Ideal Sans B', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 400;
+  margin: 0;
+  margin-bottom: 0.5em;
+}
+
+p {
+  margin: 0;
+  margin-bottom: 0.25em;
+}
+
+button {
+  font-family: 'Ideal Sans A', 'Ideal Sans B', sans-serif;
+  font-weight: 700;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4em;
+  height: 100%;
+
+  @media screen and (max-width: 379px) {
+    padding: 2em;
+  }
+}
+
+.bodyContainer {
+  flex-grow: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputContainer,
+.pendingContainer,
+.previewContainer {
+  display: none;
+  position: relative;
+
+  width: calc(100vw - 8em);
+  height: calc(100vw - 8em);
+  margin-top: 1em;
+
+  @media screen and (min-width: 769px) {
+    width: 648px;
+    height: 648px;
+  }
+
+  @media screen and (max-width: 379px) {
+    width: calc(100vw - 4em);
+    height: calc(100vw - 4em);
+  }
+
+  &.active {
+    display: block;
+  }
+}
+
+.inputContainer,
+.pendingContainer {
+  border: 2px solid #c62368;
+
+  #imgUpload {
+    display: none;
+  }
+
+  .uploadInput {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Ideal Sans A', 'Ideal Sans B', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+
+    span.icon {
+      font-weight: 400;
+    }
+  }
+}
+
+.pendingContainer {
+  border: none;
+
+  .icon {
+    font-weight: 400;
+    margin-left: 2px;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+  }
+
+  button {
+    width: 100%;
+    position: absolute;
+    bottom: -75px;
+    border: none;
+    background: #f48037;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    cursor: pointer;
+  }
+}
+
+.previewContainer {
+  canvas {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+  }
+
+  &.processing {
+    &::before {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      content: 'processing... ⌛';
+      font-family: 'Ideal Sans A', 'Ideal Sans B', sans-serif;
+      justify-content: center;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.75);
+    }
+  }
+}
+
+.cropper-point.point-se {
+  width: 15px;
+  height: 15px;
+}
