@@ -10,9 +10,14 @@ const onImageSelected = (event) => {
   image.src = URL.createObjectURL(files[0]);
 
   const container = document.querySelector('.pendingContainer');
-
   document.querySelector('.inputContainer').classList.remove('active');
   container.classList.add('active');
+
+  // clear any old one
+  if (document.querySelector('.pendingContainer div')) {
+    container.removeChild(document.querySelector('.pendingContainer div'))
+    container.removeChild(document.querySelector('.pendingContainer img'))
+  }
 
   container.appendChild(image);
 
@@ -22,11 +27,10 @@ const onImageSelected = (event) => {
     autoCropArea: 1.0,
   });
 
-  document
-    .querySelector('.pendingContainer button')
-    .addEventListener('click', () => {
-      onImageReady(cropper.getCroppedCanvas());
-    });
+  document.querySelector('.pendingContainer button').onclick = () => {
+    onImageReady(cropper.getCroppedCanvas());
+    document.querySelector('#imgUpload').value = ''
+  }
 };
 
 const onImageReady = (canvas) => {
@@ -35,17 +39,35 @@ const onImageReady = (canvas) => {
   document.querySelector('.pendingContainer').classList.remove('active');
   container.classList.add('active');
 
+  document.querySelector('.redoButton').style['display'] = 'none'
+  document.querySelector('.mintButton').style['display'] = 'none'
+
+  document.querySelector('.redoButton').onclick = () => {
+    container.classList.remove('active');
+    document.querySelector('.inputContainer').classList.add('active');
+  }
+
+  document.querySelector('.mintButton').onclick = () => {
+    alert('mint it!')
+  }
+
+  // clear any old one
+  if (document.querySelectorAll('.previewContainer canvas').length > 0) {
+    document.querySelectorAll('.previewContainer canvas').forEach(e => container.removeChild(e))
+  }
+
   container.appendChild(canvas);
   container.classList.add('processing');
 
   canvas.toBlob((canvasBlob) => {
     const formData = new FormData();
     formData.append('image', canvasBlob);
-    // #TODO: Send the image to the API, wait for the result, show it!
-    // and then remove .processing, but for now..
+
     setTimeout(() => {
       container.classList.remove('processing');
-    }, 5000);
+      document.querySelector('.redoButton').style['display'] = 'block'
+      document.querySelector('.mintButton').style['display'] = 'block'
+    }, 2000);
   });
 };
 
