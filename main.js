@@ -47,27 +47,44 @@ const onImageReady = (canvas) => {
     document.querySelector('.inputContainer').classList.add('active');
   }
 
-  document.querySelector('.mintButton').onclick = () => {
-    alert('mint it!')
+  document.querySelector('.mintButton').onclick = async () => {
+    console.log('TODO: Mint')
+    alert('mint support incoming, come back soon')
   }
 
   // clear any old one
   if (document.querySelectorAll('.previewContainer canvas').length > 0) {
     document.querySelectorAll('.previewContainer canvas').forEach(e => container.removeChild(e))
   }
+  if (document.querySelectorAll('.previewContainer img').length > 0) {
+    document.querySelectorAll('.previewContainer img').forEach(e => container.removeChild(e))
+  }
 
   container.appendChild(canvas);
   container.classList.add('processing');
 
-  canvas.toBlob((canvasBlob) => {
+  canvas.toBlob(async (canvasBlob) => {
     const formData = new FormData();
-    formData.append('image', canvasBlob);
+    formData.append('file', canvasBlob);
 
-    setTimeout(() => {
+    const res = await fetch('https://api.same-same.xyz/style/', {
+      method: 'POST',
+      body: formData
+    })
+
+    const imageBlob = await res.blob()
+    const imageObjectURL = URL.createObjectURL(imageBlob);
+
+    const newImg = document.createElement('img')
+
+    newImg.onload = () => {
       container.classList.remove('processing');
-      document.querySelector('.redoButton').style['display'] = 'block'
-      document.querySelector('.mintButton').style['display'] = 'block'
-    }, 2000);
+      document.querySelector('.redoButton').style['display'] = 'block';
+      document.querySelector('.mintButton').style['display'] = 'block';
+      container.appendChild(newImg)
+      container.removeChild(canvas);
+    }
+    newImg.src = imageObjectURL
   });
 };
 
