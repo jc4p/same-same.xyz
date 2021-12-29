@@ -67,32 +67,38 @@ const onImageReady = (canvas) => {
     const formData = new FormData();
     formData.append('file', canvasBlob);
 
-    const res = await fetch('https://api.same-same.xyz/style/', {
-      method: 'POST',
-      body: formData
-    })
+    try {
+      const res = await fetch('https://api.same-same.xyz/style/', {
+        method: 'POST',
+        body: formData
+      })
 
-    if (!res.ok) {
-      const errorBody = await res.text()
-      alert(errorBody)
+      if (!res.ok) {
+        const errorBody = await res.text()
+        alert(errorBody)
+        container.classList.remove('active');
+        document.querySelector('.inputContainer').classList.add('active');
+        return
+      }
+
+      const imageBlob = await res.blob()
+      const imageObjectURL = URL.createObjectURL(imageBlob);
+
+      const newImg = document.createElement('img')
+
+      newImg.onload = () => {
+        container.classList.remove('processing');
+        document.querySelector('.redoButton').style['display'] = 'block';
+        document.querySelector('.mintButton').style['display'] = 'block';
+        container.appendChild(newImg)
+        container.removeChild(canvas);
+      }
+      newImg.src = imageObjectURL
+    } catch (err) {
+      alert(err.message)
       container.classList.remove('active');
       document.querySelector('.inputContainer').classList.add('active');
-      return
     }
-
-    const imageBlob = await res.blob()
-    const imageObjectURL = URL.createObjectURL(imageBlob);
-
-    const newImg = document.createElement('img')
-
-    newImg.onload = () => {
-      container.classList.remove('processing');
-      document.querySelector('.redoButton').style['display'] = 'block';
-      document.querySelector('.mintButton').style['display'] = 'block';
-      container.appendChild(newImg)
-      container.removeChild(canvas);
-    }
-    newImg.src = imageObjectURL
   });
 };
 
