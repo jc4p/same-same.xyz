@@ -173,11 +173,19 @@ button {
   .redoButton {
     width: 33%;
     left: 0;
+
+    p {
+      color: black;
+    }
   }
 
   .mintButton {
     width: 33%;
     right: 0;
+
+    p {
+      color: black;
+    }
 
     @media screen and (max-width: 769px) {
       width: 50%;
