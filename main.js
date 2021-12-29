@@ -72,6 +72,14 @@ const onImageReady = (canvas) => {
       body: formData
     })
 
+    if (!res.ok) {
+      const errorBody = await res.text()
+      alert(errorBody)
+      container.classList.remove('active');
+      document.querySelector('.inputContainer').classList.add('active');
+      return
+    }
+
     const imageBlob = await res.blob()
     const imageObjectURL = URL.createObjectURL(imageBlob);
 
