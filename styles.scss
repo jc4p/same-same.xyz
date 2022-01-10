@@ -9,7 +9,7 @@ body {
 }
 
 body {
-  height: 80vh;
+  height: 100vh;
 }
 
 * {
@@ -29,11 +29,19 @@ h5 {
 p {
   margin: 0;
   margin-bottom: 0.25em;
+
+  &.no-margin {
+    margin: 0;
+  }
 }
 
 button {
   font-family: 'Ideal Sans A', 'Ideal Sans B', sans-serif;
   font-weight: 700;
+}
+
+span.icon {
+  font-weight: 400;
 }
 
 .container {
@@ -55,6 +63,7 @@ button {
   justify-content: center;
   align-items: center;
 }
+
 
 .inputContainer,
 .pendingContainer,
@@ -81,6 +90,78 @@ button {
   }
 }
 
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: calc(100vw - 8em);
+
+  @media screen and (min-width: 769px) {
+    width: 648px;
+  }
+
+  @media screen and (max-width: 379px) {
+    width: calc(100vw - 4em);
+  }
+
+  h1 {
+    margin: 0;
+  }
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    .icon {
+      font-size: 16px;
+    }
+  }
+}
+
+.inputContainer,
+.pendingContainer,
+.previewContainer {
+  .icon {
+    margin-left: 2px;
+    font-size: 16px;
+  }
+
+  button {
+    width: 100%;
+    position: absolute;
+    bottom: -75px;
+    border: none;
+    background: #f48037;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    cursor: pointer;
+  }
+}
+
+.inputContainer.redo {
+  img {
+    opacity: 0.35;
+    cursor: pointer;
+  }
+
+  .uploadInput {
+    background: #EFE1CE;
+
+    p {
+      display: none;
+    }
+    p.redo-only {
+      display: block;
+    }
+  }
+
+  .continueButton {
+    display: block;
+  }
+}
+
 .inputContainer,
 .pendingContainer {
   border: 2px solid #c62368;
@@ -99,27 +180,33 @@ button {
     background: #d2e8df;
     cursor: pointer;
 
-    span.icon {
-      font-weight: 400;
+    p.redo-only {
+      display: none;
     }
   }
-}
 
-.pendingContainer, .previewContainer {
-  .icon {
-    font-weight: 400;
-    margin-left: 2px;
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    object-fit: cover;
   }
 
-  button {
-    width: 100%;
-    position: absolute;
-    bottom: -75px;
-    border: none;
-    background: #f48037;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    cursor: pointer;
+  .continueButton {
+    display: none;
+    width: 33%;
+    right: 0;
+
+    p {
+      color: black;
+    }
+
+    @media screen and (max-width: 769px) {
+      width: 50%;
+    }
   }
 }
 
@@ -196,4 +283,67 @@ button {
 .cropper-point.point-se {
   width: 15px;
   height: 15px;
+}
+
+// modal styling
+.modal {
+  display: none;
+  z-index: 2;
+  pointer-events: all;
+
+  &.is-open {
+    display: flex;
+
+    @media screen and (max-width: 769px) {
+      position: fixed;
+    }
+  }
+
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modalContainer {
+    background-color: #fff;
+    padding: 45px;
+    width: 480px;
+    max-height: 100vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+    position: relative;
+
+    @media screen and (max-width: 769px) {
+      width: auto;
+      max-width: 90vw;
+      padding: 15px;
+    }
+
+    ul {
+      margin-top: 10px;
+      margin-left: 5px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin-bottom: 10px;
+    }
+  }
+
+  .modal-close {
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    font-size: 24px;
+  }
 }

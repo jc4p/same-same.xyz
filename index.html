@@ -13,13 +13,22 @@
   </head>
   <body>
     <div class="container">
-      <h1>same same</h1>
+      <div class="headerContainer">
+        <h1>same same</h1>
+        <button class='infoButton'>
+          <span class='icon'>📜</span>
+        </button>
+      </div>
       <div class="bodyContainer">
         <div class="inputContainer active">
           <label for="imgUpload" class="uploadInput">
             <p>say CHEESE! <span class="icon">📸</span></p>
+            <p class='redo-only'>tap to clear <span class="icon">♻️</span></p>
           </label>
           <input id="imgUpload" type="file" accept="image/png, image/jpeg" />
+          <button class='continueButton'>
+            <p>continue with pic <span class='icon'>🔀</span></p>
+          </button>
         </div>
         <div class="pendingContainer">
           <button type="submit">
@@ -33,6 +42,42 @@
           <button class="mintButton">
             <p>mint it <span class='icon'>🔨</span> 0.0069 Ξ</p>
           </button>
+        </div>
+      </div>
+    </div>
+    <div id="info-popup" class="modal" aria-hidden="true">
+      <div class="modalOverlay" tabindex="-1">
+        <div class="modalContainer" role="dialog" aria-modal="true">
+          <header>
+            <div data-micromodal-close>
+              <span class='icon modal-close'>🆗</span>
+            </div>
+          </header>
+          <div class='modalBody'>
+            <p>hi hi!</p>
+            <p>same same (but diff) is a collection of custom made nfts</p>
+            <p>upload a photo you and a random filter will be applied to it. if you think it's pretty you can mint it to keep in your wallet.</p>
+            <p class='no-margin'>how to use:</p>
+            <ul>
+              <li>select an image</li>
+              <li>crop it to a square</li>
+              <li>upload and wait a few seconds</li>
+              <li>if you like the result, hit 'mint it'</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="mint-popup" class="modal" aria-hidden="true">
+      <div class="modalOverlay" tabindex="-1">
+        <div class="modalContainer" role="dialog" aria-modal="true">
+          <div class='modalBody'>
+            <div class='connectContainer'>
+              <button class='walletConnectButton'>
+                <span>connect to wallet</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

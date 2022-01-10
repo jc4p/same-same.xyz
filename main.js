@@ -1,13 +1,41 @@
 import './styles.scss';
 import 'cropperjs/dist/cropper.css';
-
+import MicroModal from 'micromodal';
 import Cropper from 'cropperjs';
 
-const onImageSelected = (event) => {
-  const files = event.target.files;
+let lastRunSrc = null;
 
+const showInfoPopup = () => {
+  if (document.querySelector('#info-popup').classList.contains('is-open')) {
+    MicroModal.close('info-popup')
+  } else {
+    MicroModal.show('info-popup')
+  }
+}
+
+const showMintPopup = () => {
+  alert('minting coming soon')
+  //MicroModal.show('mint-popup')
+}
+
+const connectButtonListener = async () => {
+  await provider.current.enable()
+
+  const accounts = await web3.current.eth.getAccounts()
+  console.log(accounts)
+}
+document.querySelector('.walletConnectButton').addEventListener('click', connectButtonListener)
+
+const onImageSelected = (event) => {
   const image = document.createElement('img');
-  image.src = URL.createObjectURL(files[0]);
+
+  if (event.target.files) {
+    const files = event.target.files;
+    image.src = URL.createObjectURL(files[0]);
+    lastRunSrc = image.src
+  } else if (lastRunSrc) {
+    image.src = lastRunSrc
+  }
 
   const container = document.querySelector('.pendingContainer');
   document.querySelector('.inputContainer').classList.remove('active');
@@ -44,12 +72,22 @@ const onImageReady = (canvas) => {
 
   document.querySelector('.redoButton').onclick = () => {
     container.classList.remove('active');
+    const newImg = document.createElement('img');
+    newImg.src = lastRunSrc
+    newImg.onclick = () => {
+      newImg.parentElement.removeChild(newImg)
+      document.querySelector('.inputContainer').classList.remove('redo');
+    }
+
+    if (!document.querySelector('.inputContainer').classList.contains('redo')) {
+      document.querySelector('.inputContainer').classList.add('redo');
+    }
+    document.querySelector('.inputContainer').append(newImg);
     document.querySelector('.inputContainer').classList.add('active');
   }
 
-  document.querySelector('.mintButton').onclick = async () => {
-    console.log('TODO: Mint')
-    alert('mint support incoming, come back soon')
+  document.querySelector('.mintButton').onclick = () => {
+    showMintPopup()
   }
 
   // clear any old one
@@ -102,6 +140,6 @@ const onImageReady = (canvas) => {
   });
 };
 
-document
-  .querySelector('#imgUpload')
-  .addEventListener('change', onImageSelected);
+document.querySelector('#imgUpload').addEventListener('change', onImageSelected);
+document.querySelector('.continueButton').addEventListener('click', onImageSelected);
+document.querySelector('.infoButton').addEventListener('click', showInfoPopup);
