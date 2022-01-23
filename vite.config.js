@@ -5,5 +5,11 @@ export default defineConfig({
     commonjsOptions: {
       transformMixedEsModules: true
     }
+  },
+  resolve: {
+    alias: {
+      process: 'process/browser',
+      util: 'util'
+    }
   }
 })
