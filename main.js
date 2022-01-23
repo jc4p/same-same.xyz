@@ -2,6 +2,24 @@ import './styles.scss';
 import 'cropperjs/dist/cropper.css';
 import MicroModal from 'micromodal';
 import Cropper from 'cropperjs';
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import Web3Modal from "web3modal";
+import { ethers } from 'ethers';
+
+const providerOptions = {
+  walletconnect: {
+    package: WalletConnectProvider,
+    options: {
+      infuraId: "c4608deaf14544448854ab493f73f1c7"
+    }
+  }
+};
+
+const web3Modal = new Web3Modal({
+  network: "mainnet",
+  cacheProvider: true,
+  providerOptions: providerOptions
+});
 
 let lastRunSrc = null;
 
@@ -14,15 +32,17 @@ const showInfoPopup = () => {
 }
 
 const showMintPopup = () => {
-  alert('minting coming soon')
-  //MicroModal.show('mint-popup')
+  MicroModal.show('mint-popup')
 }
 
 const connectButtonListener = async () => {
-  await provider.current.enable()
+  const instance = await web3Modal.connect();
 
-  const accounts = await web3.current.eth.getAccounts()
-  console.log(accounts)
+  const provider = new ethers.providers.Web3Provider(instance);
+  const signer = provider.getSigner();
+  const address = await signer.getAddress()
+
+  document.querySelector("#addressLabel").textContent = "Logged in as: " + address
 }
 document.querySelector('.walletConnectButton').addEventListener('click', connectButtonListener)
 

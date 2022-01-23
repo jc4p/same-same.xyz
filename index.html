@@ -10,6 +10,18 @@
       href="https://cloud.typography.com/7929438/6261232/css/fonts.css"
     />
     <title>same same</title>
+    <script>
+      window.global = window;
+    </script>
+    <script type="module">
+      import process from "process";
+      import { Buffer } from "buffer";
+      import EventEmitter from "events";
+
+      window.Buffer = Buffer;
+      window.process = process;
+      window.EventEmitter = EventEmitter;
+    </script>
   </head>
   <body>
     <div class="container">
@@ -73,9 +85,15 @@
         <div class="modalContainer" role="dialog" aria-modal="true">
           <div class='modalBody'>
             <div class='connectContainer'>
+              <header>
+                <div data-micromodal-close>
+                  <span class='icon modal-close'>🆗</span>
+                </div>
+              </header>
               <button class='walletConnectButton'>
                 <span>connect to wallet</span>
               </button>
+              <p id='addressLabel'></p>
             </div>
           </div>
         </div>
