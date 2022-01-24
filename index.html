@@ -36,7 +36,6 @@
         <div class="inputContainer active">
           <label for="imgUpload" class="uploadInput">
             <p>say CHEESE! <span class="icon">📸</span></p>
-            <p class='redo-only'>tap to clear <span class="icon">♻️</span></p>
           </label>
           <input id="imgUpload" type="file" accept="image/png, image/jpeg" />
           <button class='continueButton'>
@@ -69,13 +68,14 @@
           <div class='modalBody'>
             <p>hi hi!</p>
             <p>same same (but diff) is a collection of custom made nfts</p>
-            <p>upload a photo you and a random filter will be applied to it. if you think it's pretty you can mint it to keep in your wallet.</p>
+            <p>upload a photo and it will be sent up to ipfs then minted on the ethereum mainnet, making them permanent and compatible with everything including twitter pfps.</p>
             <p class='no-margin'>how to use:</p>
             <ul>
               <li>select an image</li>
               <li>crop it to a square</li>
-              <li>upload and wait a few seconds</li>
-              <li>if you like the result, hit 'mint it'</li>
+              <li>if you like it, hit 'mint it'</li>
+              <li>connect to your wallet</li>
+              <li>verify the minting transaction</li>
             </ul>
           </div>
         </div>
@@ -91,10 +91,17 @@
                   <span class='icon modal-close'>🆗</span>
                 </div>
               </header>
-              <button class='walletConnectButton'>
-                <span>connect to wallet</span>
-              </button>
-              <p id='addressLabel'></p>
+              <div class='walletConnectContainer active'>
+                <button class='walletConnectButton'>
+                  <span>connect to wallet</span>
+                </button>
+              </div>
+              <div class='mintContainer'>
+                <p id='addressLabel'></p>
+                <button class='mintButton'>
+                  <span>start minting <span class='icon'>🔨</span></span>
+                </button>
+              </div>
             </div>
           </div>
         </div>

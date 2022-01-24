@@ -148,13 +148,6 @@ span.icon {
 
   .uploadInput {
     background: #EFE1CE;
-
-    p {
-      display: none;
-    }
-    p.redo-only {
-      display: block;
-    }
   }
 
   .continueButton {
@@ -179,10 +172,6 @@ span.icon {
     font-weight: 700;
     background: #d2e8df;
     cursor: pointer;
-
-    p.redo-only {
-      display: none;
-    }
   }
 
   img {
@@ -345,5 +334,22 @@ span.icon {
     background: none;
     border: none;
     font-size: 24px;
+  }
+}
+
+#mint-popup {
+  .walletConnectContainer, .mintContainer {
+    display: none;
+
+    &.active {
+      display: block;
+    }
+
+    button {
+      border: none;
+      background: #f48037;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
   }
 }

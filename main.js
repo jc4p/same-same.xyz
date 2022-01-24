@@ -21,7 +21,7 @@ const web3Modal = new Web3Modal({
   providerOptions: providerOptions
 });
 
-let lastRunSrc = null;
+let web3Instance, web3Provider;
 
 const showInfoPopup = () => {
   if (document.querySelector('#info-popup').classList.contains('is-open')) {
@@ -31,31 +31,50 @@ const showInfoPopup = () => {
   }
 }
 
-const showMintPopup = () => {
+const showMintPopup = async () => {
   MicroModal.show('mint-popup')
+
+  if (!web3Provider) {
+    return
+  }
+
+  try {
+    const address = await web3Provider.getSigner().getAddress();
+    if (address) {
+      document.querySelector("#addressLabel").textContent = "Logged in as: " + address
+      document.querySelector('#mint-popup .walletConnectContainer').classList.remove('active')
+      document.querySelector('#mint-popup .mintContainer').classList.add('active')
+    }
+  } catch (err) {
+    alert(err)
+    console.log('error: ', err)
+  }
 }
 
 const connectButtonListener = async () => {
-  const instance = await web3Modal.connect();
+  web3Instance = await web3Modal.connect();
 
-  const provider = new ethers.providers.Web3Provider(instance);
-  const signer = provider.getSigner();
-  const address = await signer.getAddress()
+  web3Provider = new ethers.providers.Web3Provider(web3Instance);
+  const address = await web3Provider.getSigner().getAddress();
 
   document.querySelector("#addressLabel").textContent = "Logged in as: " + address
+  document.querySelector('#mint-popup .walletConnectContainer').classList.remove('active')
+  document.querySelector('#mint-popup .mintContainer').classList.add('active')
 }
 document.querySelector('.walletConnectButton').addEventListener('click', connectButtonListener)
+
+const finalMintButtonListener = async () => {
+  if (!web3Provider) { return }
+
+  // try to call a function on the contract?
+}
+document.querySelector('#mint-popup .mintButton').addEventListener('click', connectButtonListener)
 
 const onImageSelected = (event) => {
   const image = document.createElement('img');
 
-  if (event.target.files) {
-    const files = event.target.files;
-    image.src = URL.createObjectURL(files[0]);
-    lastRunSrc = image.src
-  } else if (lastRunSrc) {
-    image.src = lastRunSrc
-  }
+  const files = event.target.files;
+  image.src = URL.createObjectURL(files[0]);
 
   const container = document.querySelector('.pendingContainer');
   document.querySelector('.inputContainer').classList.remove('active');
@@ -92,17 +111,6 @@ const onImageReady = (canvas) => {
 
   document.querySelector('.redoButton').onclick = () => {
     container.classList.remove('active');
-    const newImg = document.createElement('img');
-    newImg.src = lastRunSrc
-    newImg.onclick = () => {
-      newImg.parentElement.removeChild(newImg)
-      document.querySelector('.inputContainer').classList.remove('redo');
-    }
-
-    if (!document.querySelector('.inputContainer').classList.contains('redo')) {
-      document.querySelector('.inputContainer').classList.add('redo');
-    }
-    document.querySelector('.inputContainer').append(newImg);
     document.querySelector('.inputContainer').classList.add('active');
   }
 
