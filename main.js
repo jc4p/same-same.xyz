@@ -5,6 +5,7 @@ import Cropper from 'cropperjs';
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
 import { ethers } from 'ethers';
+import ABI from './abis/v01.json';
 
 const providerOptions = {
   walletconnect: {
@@ -66,9 +67,24 @@ document.querySelector('.walletConnectButton').addEventListener('click', connect
 const finalMintButtonListener = async () => {
   if (!web3Provider) { return }
 
-  // try to call a function on the contract?
+  const contractAddress = '0xaFB93bB902eaB28a8B5862Bb2D0caE7bF8827803';
+  const contract = new ethers.Contract(contractAddress, ABI, web3Provider.getSigner())
+
+  const name = await contract.name()
+  if (name !== 'SameSameButDiff') {
+    alert("Unknown contract")
+    return
+  }
+
+  const oldText = document.querySelector("#addressLabel").textContent
+  document.querySelector("#addressLabel").textContent = "Accept mint transaction in your wallet"
+  contract.mintOne("test1234test1234", { value: ethers.utils.parseEther("0.0069") })
+    .catch(function(err) {
+      document.querySelector("#addressLabel").textContent = oldText
+      alert(err.message)
+    })
 }
-document.querySelector('#mint-popup .mintButton').addEventListener('click', connectButtonListener)
+document.querySelector('#mint-popup .mintButton').addEventListener('click', finalMintButtonListener)
 
 const onImageSelected = (event) => {
   const image = document.createElement('img');
